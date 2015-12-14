@@ -1,0 +1,24 @@
+build:
+  image: golang:1.5
+  commands:
+    - make deps
+    - make build
+    - make test
+
+publish:
+  docker:
+    username: drone
+    password: $$DOCKER_PASS
+    email: $$DOCKER_EMAIL
+    repo: plugins/drone-aws-codedeploy
+    when:
+      branch: master
+
+plugin:
+  name: AWS CodeDeploy
+  desc: Deploys or updates a project on AWS CodeDeploy
+  type: deploy
+  image: plugins/drone-aws-codedeploy
+  labels:
+    - aws
+    - codedeploy
