@@ -10,15 +10,15 @@ publish:
     username: drone
     password: $$DOCKER_PASS
     email: $$DOCKER_EMAIL
-    repo: plugins/drone-aws-codedeploy
+    repo: plugins/drone-codedeploy
     when:
       branch: master
 
 plugin:
-  name: AWS CodeDeploy
-  desc: Deploys or updates a project on AWS CodeDeploy
+  name: CodeDeploy
+  desc: Deploys or updates a project on CodeDeploy
   type: deploy
-  image: plugins/drone-aws-codedeploy
+  image: plugins/drone-codedeploy
   labels:
     - aws
     - codedeploy

@@ -18,7 +18,7 @@ var (
 )
 
 func main() {
-	fmt.Printf("Drone AWS CodeDeply Plugin built at %s\n", buildDate)
+	fmt.Printf("Drone CodeDeply Plugin built at %s\n", buildDate)
 
 	repo := drone.Repo{}
 	build := drone.Build{}
@@ -91,8 +91,13 @@ func main() {
 	svc := codedeploy.New(
 		session.New(&aws.Config{
 			Region:      aws.String(vargs.Region),
-			Credentials: credentials.NewStaticCredentials(vargs.AccessKey, vargs.SecretKey, ""),
-		}))
+			Credentials: credentials.NewStaticCredentials(
+				vargs.AccessKey,
+				vargs.SecretKey,
+				"",
+			),
+		}),
+	)
 
 	_, err := svc.CreateDeployment(
 		&codedeploy.CreateDeploymentInput{
@@ -115,7 +120,8 @@ func main() {
 					Version:    aws.String(vargs.BucketVersion),
 				},
 			},
-		})
+		},
+	)
 
 	if err != nil {
 		fmt.Println(err.Error())
