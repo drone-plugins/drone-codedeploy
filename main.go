@@ -57,8 +57,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	var location *codedeploy.RevisionLocation
+
 	switch vargs.RevisionType {
 	case codedeploy.RevisionLocationTypeGitHub:
+		location = &codedeploy.RevisionLocation{
+			RevisionType: aws.String(vargs.RevisionType),
+			GitHubLocation: &codedeploy.GitHubLocation{
+				CommitId:   aws.String(build.Commit),
+				Repository: aws.String(repo.FullName),
+			},
+		}
 	case codedeploy.RevisionLocationTypeS3:
 		if vargs.BundleType == "" {
 			fmt.Println("Please provide a bundle type")
@@ -83,6 +92,17 @@ func main() {
 			fmt.Println("Invalid bundle type")
 			os.Exit(1)
 		}
+
+		location = &codedeploy.RevisionLocation{
+			RevisionType: aws.String(vargs.RevisionType),
+			S3Location: &codedeploy.S3Location{
+				BundleType: aws.String(vargs.BundleType),
+				Bucket:     aws.String(vargs.BucketName),
+				Key:        aws.String(vargs.BucketKey),
+				ETag:       aws.String(vargs.BucketEtag),
+				Version:    aws.String(vargs.BucketVersion),
+			},
+		}
 	default:
 		fmt.Println("Invalid revision type")
 		os.Exit(1)
@@ -90,7 +110,7 @@ func main() {
 
 	svc := codedeploy.New(
 		session.New(&aws.Config{
-			Region:      aws.String(vargs.Region),
+			Region: aws.String(vargs.Region),
 			Credentials: credentials.NewStaticCredentials(
 				vargs.AccessKey,
 				vargs.SecretKey,
@@ -106,20 +126,7 @@ func main() {
 			DeploymentGroupName:           aws.String(vargs.DeploymentGroup),
 			Description:                   aws.String(vargs.Description),
 			IgnoreApplicationStopFailures: aws.Bool(vargs.IgnoreStopFailures),
-			Revision: &codedeploy.RevisionLocation{
-				RevisionType: aws.String(vargs.RevisionType),
-				GitHubLocation: &codedeploy.GitHubLocation{
-					CommitId:   aws.String(build.Commit),
-					Repository: aws.String(repo.FullName),
-				},
-				S3Location: &codedeploy.S3Location{
-					BundleType: aws.String(vargs.BundleType),
-					Bucket:     aws.String(vargs.BucketName),
-					Key:        aws.String(vargs.BucketKey),
-					ETag:       aws.String(vargs.BucketEtag),
-					Version:    aws.String(vargs.BucketVersion),
-				},
-			},
+			Revision:                      location,
 		},
 	)
 
