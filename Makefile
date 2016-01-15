@@ -18,8 +18,14 @@ deps:
 test:
 	go test -cover ./...
 
+fmt:
+	go fmt ./...
+
+vet:
+	go vet ./...
+
 build:
 	go build -ldflags '-s -w $(LDFLAGS)'
 
 docker:
-	docker build --rm=true -t plugins/drone-aws-codedeploy .
+	docker build --rm=true -t plugins/drone-codedeploy .

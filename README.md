@@ -1,14 +1,14 @@
-# drone-aws-codedeploy
+# drone-codedeploy
 
-[![Build Status](http://beta.drone.io/api/badges/drone-plugins/drone-aws-codedeploy/status.svg)](http://beta.drone.io/drone-plugins/drone-aws-codedeploy)
-[![](https://badge.imagelayers.io/plugins/drone-aws-codedeploy:latest.svg)](https://imagelayers.io/?images=plugins/drone-aws-codedeploy:latest 'Get your own badge on imagelayers.io')
+[![Build Status](http://beta.drone.io/api/badges/drone-plugins/drone-codedeploy/status.svg)](http://beta.drone.io/drone-plugins/drone-codedeploy)
+[![](https://badge.imagelayers.io/plugins/drone-codedeploy:latest.svg)](https://imagelayers.io/?images=plugins/drone-codedeploy:latest 'Get your own badge on imagelayers.io')
 
-Drone plugin for deploying to AWS CodeDeploy
+Drone plugin for deploying to CodeDeploy
 
 ## Usage
 
 ```sh
-./drone-aws-codedeploy <<EOF
+./drone-codedeploy <<EOF
 {
     "repo": {
         "clone_url": "git://github.com/drone/drone",
@@ -41,7 +41,7 @@ make deps build docker
 ### Example
 
 ```sh
-docker run -i plugins/drone-aws-codedeploy <<EOF
+docker run -i plugins/drone-codedeploy <<EOF
 {
     "repo": {
         "clone_url": "git://github.com/drone/drone",
