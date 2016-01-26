@@ -1,4 +1,4 @@
-# Docker image for the Drone CodeDeploy plugin
+# Docker image for the Drone AWS CodeDeploy plugin
 #
 #     cd $GOPATH/src/github.com/drone-plugins/drone-codedeploy
 #     make deps build docker
