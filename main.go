@@ -92,15 +92,23 @@ func main() {
 			os.Exit(1)
 		}
 
+		s3location := &codedeploy.S3Location{
+			BundleType: aws.String(vargs.BundleType),
+			Bucket:     aws.String(vargs.BucketName),
+			Key:        aws.String(vargs.BucketKey),
+		}
+
+		if vargs.BucketEtag != "" {
+			s3location.ETag = aws.String(vargs.BucketEtag)
+		}
+
+		if vargs.BucketVersion != "" {
+			s3location.Version = aws.String(vargs.BucketVersion)
+		}
+
 		location = &codedeploy.RevisionLocation{
 			RevisionType: aws.String(vargs.RevisionType),
-			S3Location: &codedeploy.S3Location{
-				BundleType: aws.String(vargs.BundleType),
-				Bucket:     aws.String(vargs.BucketName),
-				Key:        aws.String(vargs.BucketKey),
-				ETag:       aws.String(vargs.BucketEtag),
-				Version:    aws.String(vargs.BucketVersion),
-			},
+			S3Location: s3location,
 		}
 	default:
 		fmt.Println("Invalid revision type")
