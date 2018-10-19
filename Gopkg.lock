@@ -2,6 +2,7 @@
 
 
 [[projects]]
+  digest = "1:bc630175af3b8d4246538764c90867bed65ebe1798faa6340c30d150a0f04c35"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -31,25 +32,93 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/codedeploy",
-    "service/sts"
+    "service/sts",
   ]
+  pruneopts = "UT"
   revision = "28d0127967e59b0c41cede1e8d548ed85374bbbc"
   version = "v1.13.14"
 
 [[projects]]
+  digest = "1:456a75e75ac8c8397d24c777a0d6ae00e9936e3833c88923eab35df5213b75f8"
+  name = "github.com/drone/drone-go"
+  packages = [
+    "drone",
+    "plugin",
+  ]
+  pruneopts = "UT"
+  revision = "eaa41f7836a191224ec5702d2458db07882ec269"
+
+[[projects]]
+  digest = "1:db18b69d50d54aadb436b8639e2b55b5ece5f595a601d9eb461fabd998ebb288"
   name = "github.com/go-ini/ini"
   packages = ["."]
+  pruneopts = "UT"
   revision = "6333e38ac20b8949a8dd68baa3650f4dee8f39f0"
   version = "v1.33.0"
 
 [[projects]]
+  digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
+  version = "v1.2.0"
+
+[[projects]]
+  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
+  pruneopts = "UT"
   revision = "0b12d6b5"
+
+[[projects]]
+  branch = "master"
+  digest = "1:d6b719875cf8091fbab38527d81d34e71f4521b9ee9ccfbd4a32cff2ac5af96e"
+  name = "golang.org/x/net"
+  packages = [
+    "context",
+    "context/ctxhttp",
+  ]
+  pruneopts = "UT"
+  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
+
+[[projects]]
+  branch = "master"
+  digest = "1:1bce229fad01cbad9bd00e70ca32afff25ac2cea3dd710d50f88c967c1c3df65"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "9dcd33a902f40452422c2367fefcb95b54f9f8f8"
+
+[[projects]]
+  digest = "1:6247f76e55a1e1a5c19a81e2d4b4dff6730461eeb5bbb0a16dd4a8ec8637ee93"
+  name = "google.golang.org/appengine"
+  packages = [
+    "internal",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "urlfetch",
+  ]
+  pruneopts = "UT"
+  revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
+  version = "v1.2.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "662e4e46114d2937353309d7f7e034bb078ea828326d13c5133529cb26a31903"
+  input-imports = [
+    "github.com/aws/aws-sdk-go/aws",
+    "github.com/aws/aws-sdk-go/aws/credentials",
+    "github.com/aws/aws-sdk-go/aws/session",
+    "github.com/aws/aws-sdk-go/service/codedeploy",
+    "github.com/drone/drone-go/drone",
+    "github.com/drone/drone-go/plugin",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
