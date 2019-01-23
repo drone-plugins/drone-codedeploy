@@ -2,7 +2,7 @@ module github.com/drone-plugins/drone-codedeploy
 
 require (
 	github.com/aws/aws-sdk-go v1.16.22
-	github.com/drone/drone-go v0.0.0-20160502151758-eaa41f7836a1
+	github.com/drone/drone-go v0.8.4
 	github.com/go-ini/ini v1.33.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20190123100345-c2b33e8439af // indirect
