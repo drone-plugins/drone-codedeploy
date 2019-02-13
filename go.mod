@@ -11,7 +11,7 @@ require (
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
 	golang.org/x/net v0.0.0-20190206194604-65e2d4e15006 // indirect
-	golang.org/x/oauth2 v0.0.0-20190211080748-99b60b757ec1 // indirect
+	golang.org/x/oauth2 v0.0.0-20190213014240-3e8b2be13635 // indirect
 	golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 	gopkg.in/ini.v1 v1.41.0 // indirect
