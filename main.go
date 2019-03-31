@@ -13,11 +13,11 @@ import (
 )
 
 var (
-	buildCommit string
+	version = "unknown"
 )
 
 func main() {
-	fmt.Printf("Drone AWS CodeDeploy Plugin built from %s\n", buildCommit)
+	fmt.Printf("Drone AWS CodeDeploy Plugin built from %s\n", version)
 
 	repo := drone.Repo{}
 	build := drone.Build{}
@@ -108,7 +108,7 @@ func main() {
 
 		location = &codedeploy.RevisionLocation{
 			RevisionType: aws.String(vargs.RevisionType),
-			S3Location: s3location,
+			S3Location:   s3location,
 		}
 	default:
 		fmt.Println("Invalid revision type")
