@@ -1,13 +1,15 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/codedeploy"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/codedeploy"
+	"github.com/aws/aws-sdk-go-v2/service/codedeploy/types"
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin"
 )
@@ -33,7 +35,7 @@ func main() {
 	}
 
 	if vargs.RevisionType == "" {
-		vargs.RevisionType = codedeploy.RevisionLocationTypeGitHub
+		vargs.RevisionType = string(types.RevisionLocationTypeGitHub)
 	}
 
 	if vargs.AccessKey == "" {
@@ -56,18 +58,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	var location *codedeploy.RevisionLocation
+	var location *types.RevisionLocation
 
-	switch vargs.RevisionType {
-	case codedeploy.RevisionLocationTypeGitHub:
-		location = &codedeploy.RevisionLocation{
-			RevisionType: aws.String(vargs.RevisionType),
-			GitHubLocation: &codedeploy.GitHubLocation{
+	switch types.RevisionLocationType(vargs.RevisionType) {
+	case types.RevisionLocationTypeGitHub:
+		location = &types.RevisionLocation{
+			RevisionType: types.RevisionLocationTypeGitHub,
+			GitHubLocation: &types.GitHubLocation{
 				CommitId:   aws.String(build.Commit),
 				Repository: aws.String(repo.FullName),
 			},
 		}
-	case codedeploy.RevisionLocationTypeS3:
+	case types.RevisionLocationTypeS3:
 		if vargs.BundleType == "" {
 			fmt.Println("Please provide a bundle type")
 			os.Exit(1)
@@ -83,17 +85,17 @@ func main() {
 			os.Exit(1)
 		}
 
-		switch vargs.BundleType {
-		case codedeploy.BundleTypeTar:
-		case codedeploy.BundleTypeTgz:
-		case codedeploy.BundleTypeZip:
+		switch types.BundleType(vargs.BundleType) {
+		case types.BundleTypeTar:
+		case types.BundleTypeTarGZip: // tgz
+		case types.BundleTypeZip:
 		default:
 			fmt.Println("Invalid bundle type")
 			os.Exit(1)
 		}
 
-		s3location := &codedeploy.S3Location{
-			BundleType: aws.String(vargs.BundleType),
+		s3location := &types.S3Location{
+			BundleType: types.BundleType(vargs.BundleType),
 			Bucket:     aws.String(vargs.BucketName),
 			Key:        aws.String(vargs.BucketKey),
 		}
@@ -106,8 +108,8 @@ func main() {
 			s3location.Version = aws.String(vargs.BucketVersion)
 		}
 
-		location = &codedeploy.RevisionLocation{
-			RevisionType: aws.String(vargs.RevisionType),
+		location = &types.RevisionLocation{
+			RevisionType: types.RevisionLocationTypeS3,
 			S3Location:   s3location,
 		}
 	default:
@@ -115,24 +117,30 @@ func main() {
 		os.Exit(1)
 	}
 
-	svc := codedeploy.New(
-		session.New(&aws.Config{
-			Region: aws.String(vargs.Region),
-			Credentials: credentials.NewStaticCredentials(
-				vargs.AccessKey,
-				vargs.SecretKey,
-				"",
-			),
-		}),
-	)
+	ctx := context.Background()
 
-	_, err := svc.CreateDeployment(
+	cfg, err := config.LoadDefaultConfig(ctx,
+		config.WithRegion(vargs.Region),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
+			vargs.AccessKey,
+			vargs.SecretKey,
+			"",
+		)),
+	)
+	if err != nil {
+		fmt.Printf("Failed to load AWS config: %v\n", err)
+		os.Exit(1)
+	}
+
+	svc := codedeploy.NewFromConfig(cfg)
+
+	_, err = svc.CreateDeployment(ctx,
 		&codedeploy.CreateDeploymentInput{
 			ApplicationName:               aws.String(vargs.Application),
 			DeploymentConfigName:          aws.String(vargs.DeploymentConfig),
 			DeploymentGroupName:           aws.String(vargs.DeploymentGroup),
 			Description:                   aws.String(vargs.Description),
-			IgnoreApplicationStopFailures: aws.Bool(vargs.IgnoreStopFailures),
+			IgnoreApplicationStopFailures: vargs.IgnoreStopFailures,
 			Revision:                      location,
 		},
 	)
