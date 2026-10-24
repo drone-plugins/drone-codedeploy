@@ -9,7 +9,7 @@ platform:
 steps:
 - name: vet
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - go vet ./...
   environment:
@@ -20,7 +20,7 @@ steps:
 
 - name: test
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - go test -cover ./...
   environment:
@@ -50,7 +50,7 @@ platform:
 steps:
 - name: build-push
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_COMMIT_SHA:0:8}\" -a -tags netgo -o release/linux/amd64/drone-codedeploy"
   environment:
@@ -63,7 +63,7 @@ steps:
 
 - name: build-tag
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_TAG##v}\" -a -tags netgo -o release/linux/amd64/drone-codedeploy"
   environment:
@@ -75,7 +75,7 @@ steps:
 
 - name: executable
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - ./release/linux/amd64/drone-codedeploy --help
 
@@ -83,6 +83,8 @@ steps:
   pull: always
   image: plugins/docker:linux-amd64
   settings:
+    pull_image: true
+    no_cache: true
     daemon_off: false
     dockerfile: docker/Dockerfile.linux.amd64
     dry_run: true
@@ -100,6 +102,8 @@ steps:
   pull: always
   image: plugins/docker:linux-amd64
   settings:
+    pull_image: true
+    no_cache: true
     auto_tag: true
     auto_tag_suffix: linux-amd64
     daemon_off: false
@@ -134,7 +138,7 @@ platform:
 steps:
 - name: build-push
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_COMMIT_SHA:0:8}\" -a -tags netgo -o release/linux/arm64/drone-codedeploy"
   environment:
@@ -147,7 +151,7 @@ steps:
 
 - name: build-tag
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_TAG##v}\" -a -tags netgo -o release/linux/arm64/drone-codedeploy"
   environment:
@@ -159,7 +163,7 @@ steps:
 
 - name: executable
   pull: always
-  image: golang:1.11
+  image: harness0.harness.io/oci/docker_artifacts/hhi/go:1.26.10@sha256:718fddf012b3a305e936ae9964e5a642036bcb7b4c6c0786e2f78f238d637db8
   commands:
   - ./release/linux/arm64/drone-codedeploy --help
 
@@ -167,6 +171,8 @@ steps:
   pull: always
   image: plugins/docker:linux-arm64
   settings:
+    pull_image: true
+    no_cache: true
     daemon_off: false
     dockerfile: docker/Dockerfile.linux.arm64
     dry_run: true
@@ -184,6 +190,8 @@ steps:
   pull: always
   image: plugins/docker:linux-arm64
   settings:
+    pull_image: true
+    no_cache: true
     auto_tag: true
     auto_tag_suffix: linux-arm64
     daemon_off: false
@@ -218,7 +226,7 @@ platform:
 steps:
 - name: build-push
   pull: always
-  image: golang:1.11
+  image: golang:1.26.10-alpine@sha256:27f2d3b83cfc5803c8078f8e730af0f7c431bf067afaec8f60a36fb763187cba
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_COMMIT_SHA:0:8}\" -a -tags netgo -o release/linux/arm/drone-codedeploy"
   environment:
@@ -231,7 +239,7 @@ steps:
 
 - name: build-tag
   pull: always
-  image: golang:1.11
+  image: golang:1.26.10-alpine@sha256:27f2d3b83cfc5803c8078f8e730af0f7c431bf067afaec8f60a36fb763187cba
   commands:
   - "go build -v -ldflags \"-X main.version=${DRONE_TAG##v}\" -a -tags netgo -o release/linux/arm/drone-codedeploy"
   environment:
@@ -243,7 +251,7 @@ steps:
 
 - name: executable
   pull: always
-  image: golang:1.11
+  image: golang:1.26.10-alpine@sha256:27f2d3b83cfc5803c8078f8e730af0f7c431bf067afaec8f60a36fb763187cba
   commands:
   - ./release/linux/arm/drone-codedeploy --help
 
@@ -251,6 +259,8 @@ steps:
   pull: always
   image: plugins/docker:linux-arm
   settings:
+    pull_image: true
+    no_cache: true
     daemon_off: false
     dockerfile: docker/Dockerfile.linux.arm
     dry_run: true
@@ -268,6 +278,8 @@ steps:
   pull: always
   image: plugins/docker:linux-arm
   settings:
+    pull_image: true
+    no_cache: true
     auto_tag: true
     auto_tag_suffix: linux-arm
     daemon_off: false

@@ -12,6 +12,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1803
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - go vet ./...
   environment:
     GO111MODULE: on
@@ -23,6 +24,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1803
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - go test -cover ./...
   environment:
     GO111MODULE: on
@@ -54,6 +56,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1803
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - "go build -v -ldflags \"-X main.version=${DRONE_COMMIT_SHA:0:8}\" -a -tags netgo -o release/windows/amd64/drone-codedeploy.exe"
   environment:
     CGO_ENABLED: 0
@@ -67,6 +70,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1803
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - "go build -v -ldflags \"-X main.version=${DRONE_TAG##v}\" -a -tags netgo -o release/windows/amd64/drone-codedeploy.exe"
   environment:
     CGO_ENABLED: 0
@@ -85,6 +89,8 @@ steps:
   pull: always
   image: plugins/docker:windows-1803
   settings:
+    pull_image: true
+    no_cache: true
     daemon_off: true
     dockerfile: docker/Dockerfile.windows.1803
     dry_run: true
@@ -105,6 +111,8 @@ steps:
   pull: always
   image: plugins/docker:windows-1803
   settings:
+    pull_image: true
+    no_cache: true
     auto_tag: true
     auto_tag_suffix: windows-1803
     daemon_off: true
@@ -150,6 +158,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1809
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - "go build -v -ldflags \"-X main.version=${DRONE_COMMIT_SHA:0:8}\" -a -tags netgo -o release/windows/amd64/drone-codedeploy.exe"
   environment:
     CGO_ENABLED: 0
@@ -163,6 +172,7 @@ steps:
   pull: always
   image: golang:1.11-windowsservercore-1809
   commands:
+  - . ./scripts/setup-go-windows.ps1
   - "go build -v -ldflags \"-X main.version=${DRONE_TAG##v}\" -a -tags netgo -o release/windows/amd64/drone-codedeploy.exe"
   environment:
     CGO_ENABLED: 0
@@ -181,6 +191,8 @@ steps:
   pull: always
   image: plugins/docker:windows-1809
   settings:
+    pull_image: true
+    no_cache: true
     daemon_off: true
     dockerfile: docker/Dockerfile.windows.1809
     dry_run: true
@@ -201,6 +213,8 @@ steps:
   pull: always
   image: plugins/docker:windows-1809
   settings:
+    pull_image: true
+    no_cache: true
     auto_tag: true
     auto_tag_suffix: windows-1809
     daemon_off: true
